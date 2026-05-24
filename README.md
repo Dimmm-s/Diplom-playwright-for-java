@@ -37,7 +37,7 @@ mvn test -Dgroups=checkout -Dbrowser=chromium -Dheadless=false
 ```
 
 ```bash
-mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="show-trace target/traces/имя-файла.zip"
+mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="show-trace target/traces/name-file.zip"
 ```
 
 
