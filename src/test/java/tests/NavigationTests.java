@@ -9,6 +9,7 @@ import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("navigation")
@@ -42,13 +43,44 @@ public class NavigationTests extends BaseTest {
     @Test
     @DisplayName("Користувач відкриває меню")
     void userCanOpenMenu() {
-        assertTrue(inventoryPage.isNavigationMenuAvailable());
+        assertTrue(inventoryPage.menu().hasMainActions());
+    }
+
+    @Test
+    @DisplayName("Користувач переходить до каталогу з навігаційного меню")
+    void userCanOpenCatalogFromMenu() {
+        CartPage cartPage = inventoryPage.openCart();
+
+        InventoryPage catalogPage = cartPage.menu().openCatalog();
+
+        assertTrue(catalogPage.isOpened());
+    }
+
+    @Test
+    @DisplayName("Користувач відкриває сторінку About з навігаційного меню")
+    void userCanOpenAboutFromMenu() {
+        inventoryPage.menu().openAbout();
+
+        page.waitForURL("**saucelabs.com**");
+
+        assertTrue(page.url().contains("saucelabs.com"));
+    }
+
+    @Test
+    @DisplayName("Користувач скидає стан застосунку через меню")
+    void userCanResetAppStateFromMenu() {
+        inventoryPage.addProductToCart("Sauce Labs Backpack");
+        assertEquals(1, inventoryPage.getCartBadgeCount());
+
+        inventoryPage.menu().resetAppState();
+
+        assertEquals(0, inventoryPage.getCartBadgeCount());
     }
 
     @Test
     @DisplayName("Користувач виконує logout")
     void userCanLogout() {
-        inventoryPage.logout();
+        inventoryPage.menu().logout();
 
         assertTrue(new LoginPage(page).isOpened());
     }
@@ -58,7 +90,7 @@ public class NavigationTests extends BaseTest {
     void loginPageIsDisplayedAfterLogout() {
         LoginPage loginPage = new LoginPage(page);
 
-        inventoryPage.logout();
+        inventoryPage.menu().logout();
 
         assertTrue(loginPage.isOpened());
     }

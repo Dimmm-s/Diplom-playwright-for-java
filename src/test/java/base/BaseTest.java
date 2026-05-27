@@ -7,15 +7,19 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import config.TestConfig;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.LifecycleMethodExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import utils.ArtifactUtil;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseTest {
     protected Playwright playwright;
     protected Browser browser;
@@ -25,15 +29,17 @@ public abstract class BaseTest {
     @RegisterExtension
     FailureArtifactExtension failureArtifactExtension = new FailureArtifactExtension();
 
-    @BeforeEach
-    void setUp(TestInfo testInfo) {
+    @BeforeAll
+    void startBrowser() {
         ArtifactUtil.createArtifactDirectories();
         playwright = Playwright.create();
         browser = launchBrowser();
+    }
+
+    @BeforeEach
+    void setUp(TestInfo testInfo) {
         context = browser.newContext(new Browser.NewContextOptions()
                 .setViewportSize(1440, 900));
-        context.setDefaultTimeout(TestConfig.BASE_TIMEOUT);
-        context.setDefaultNavigationTimeout(TestConfig.BASE_TIMEOUT);
         context.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)
                 .setSnapshots(true)
@@ -54,6 +60,10 @@ public abstract class BaseTest {
         if (context != null) {
             context.close();
         }
+    }
+
+    @AfterAll
+    void stopBrowser() {
         if (browser != null) {
             browser.close();
         }

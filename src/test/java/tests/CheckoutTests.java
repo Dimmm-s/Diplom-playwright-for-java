@@ -48,6 +48,7 @@ public class CheckoutTests extends BaseTest {
             "Ivan, '', 01001, Error: Last Name is required",
             "Ivan, Petrenko, '', Error: Postal Code is required"
     })
+    @Tag("checkout")
     @Tag("negative")
     @DisplayName("Перевірка помилок checkout-форми")
     void checkoutRequiredFieldsValidation(String firstName, String lastName, String postalCode, String expectedError) {

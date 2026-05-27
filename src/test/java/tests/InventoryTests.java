@@ -50,6 +50,16 @@ public class InventoryTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("Користувач видаляє товар із кошика на сторінці Products")
+    void userCanRemoveProductFromCatalog() {
+        inventoryPage.addProductToCart("Sauce Labs Backpack");
+
+        inventoryPage.removeProductFromCatalog("Sauce Labs Backpack");
+
+        assertEquals(0, inventoryPage.getCartBadgeCount());
+    }
+
+    @Test
     @DisplayName("Лічильник кошика змінюється після додавання товару")
     void cartBadgeChangesAfterAddingProduct() {
         inventoryPage.addProductToCart("Sauce Labs Backpack");
@@ -66,12 +76,13 @@ public class InventoryTests extends BaseTest {
         inventoryPage.sortProducts("za");
 
         assertNotEquals(firstProductBeforeSorting, inventoryPage.firstProductName());
+        assertEquals("Test.allTheThings() T-Shirt (Red)", inventoryPage.firstProductName());
     }
 
     @Test
     @DisplayName("Користувач відкриває навігаційне меню")
     void userCanOpenNavigationMenu() {
-        assertTrue(inventoryPage.isNavigationMenuAvailable());
+        assertTrue(inventoryPage.menu().hasMainActions());
     }
 
     @Test
@@ -79,7 +90,7 @@ public class InventoryTests extends BaseTest {
     void userCanLogoutFromMenu() {
         LoginPage loginPage = new LoginPage(page);
 
-        inventoryPage.logout();
+        inventoryPage.menu().logout();
 
         assertTrue(loginPage.isOpened());
     }

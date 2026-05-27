@@ -3,8 +3,7 @@ package pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-public class CheckoutPage {
-    private final Locator title;
+public class CheckoutPage extends BasePage {
     private final Locator firstNameInput;
     private final Locator lastNameInput;
     private final Locator postalCodeInput;
@@ -14,7 +13,7 @@ public class CheckoutPage {
     private final Locator completeHeader;
 
     public CheckoutPage(Page page) {
-        this.title = page.locator("[data-test='title']");
+        super(page);
         this.firstNameInput = page.locator("[data-test='firstName']");
         this.lastNameInput = page.locator("[data-test='lastName']");
         this.postalCodeInput = page.locator("[data-test='postalCode']");
@@ -25,7 +24,7 @@ public class CheckoutPage {
     }
 
     public boolean isCheckoutFormOpened() {
-        return title.isVisible() && "Checkout: Your Information".equals(title.textContent().trim());
+        return hasHeader() && "Checkout: Your Information".equals(getTitle());
     }
 
     public void fillFirstName(String firstName) {

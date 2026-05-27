@@ -3,23 +3,20 @@ package pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
-public class CartPage {
-    private final Page page;
-    private final Locator title;
+public class CartPage extends BasePage {
     private final Locator cartItems;
     private final Locator checkoutButton;
     private final Locator continueShoppingButton;
 
     public CartPage(Page page) {
-        this.page = page;
-        this.title = page.locator("[data-test='title']");
+        super(page);
         this.cartItems = page.locator("[data-test='inventory-item']");
         this.checkoutButton = page.locator("[data-test='checkout']");
         this.continueShoppingButton = page.locator("[data-test='continue-shopping']");
     }
 
     public boolean isOpened() {
-        return title.isVisible() && "Your Cart".equals(title.textContent().trim());
+        return hasHeader() && "Your Cart".equals(getTitle());
     }
 
     public boolean hasProduct(String productName) {
@@ -34,12 +31,18 @@ public class CartPage {
         return cartItems.count() == 0;
     }
 
-    public void checkout() {
-        checkoutButton.click();
+    public int getItemCount() {
+        return cartItems.count();
     }
 
-    public void continueShopping() {
+    public CheckoutPage checkout() {
+        checkoutButton.click();
+        return new CheckoutPage(page);
+    }
+
+    public InventoryPage continueShopping() {
         continueShoppingButton.click();
+        return new InventoryPage(page);
     }
 
     private Locator productItem(String productName) {

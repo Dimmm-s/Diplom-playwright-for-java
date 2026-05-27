@@ -10,6 +10,7 @@ import pages.CheckoutPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("cart")
@@ -31,7 +32,7 @@ public class CartTests extends BaseTest {
     void userCanAddProductToCart() {
         inventoryPage.addProductToCart(PRODUCT_NAME);
 
-        assertTrue("1".equals(inventoryPage.getCartBadgeText()));
+        assertEquals("1", inventoryPage.getCartBadgeText());
     }
 
     @Test
@@ -63,6 +64,25 @@ public class CartTests extends BaseTest {
         cartPage.removeProduct(PRODUCT_NAME);
 
         assertTrue(cartPage.isEmpty());
+    }
+
+    @Test
+    @DisplayName("Кількість товарів у кошику змінюється після додавання та видалення")
+    void cartItemCountChangesAfterAddAndRemoveProducts() {
+        inventoryPage.addProductToCart("Sauce Labs Backpack");
+        inventoryPage.addProductToCart("Sauce Labs Bike Light");
+        inventoryPage.openCart();
+
+        assertTrue(cartPage.isOpened());
+        assertEquals(2, cartPage.getItemCount());
+
+        cartPage.removeProduct("Sauce Labs Backpack");
+        assertEquals(1, cartPage.getItemCount());
+        assertEquals(1, cartPage.getCartBadgeCount());
+
+        cartPage.removeProduct("Sauce Labs Bike Light");
+        assertTrue(cartPage.isEmpty());
+        assertEquals(0, cartPage.getCartBadgeCount());
     }
 
     @Test

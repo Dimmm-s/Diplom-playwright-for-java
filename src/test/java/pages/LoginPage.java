@@ -23,6 +23,10 @@ public class LoginPage {
         page.navigate(TestConfig.BASE_URL);
     }
 
+    public void openProtectedPath(String path) {
+        page.navigate(TestConfig.BASE_URL + path.replaceFirst("^/", ""));
+    }
+
     public void login(String username, String password) {
         usernameInput.fill(username);
         passwordInput.fill(password);
@@ -35,5 +39,9 @@ public class LoginPage {
 
     public boolean isOpened() {
         return usernameInput.isVisible() && passwordInput.isVisible() && loginButton.isVisible();
+    }
+
+    public String currentUrl() {
+        return page.url();
     }
 }
