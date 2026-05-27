@@ -1,4 +1,4 @@
-# SauceDemo Playwright for Java E2E
+# SauceDemo Playwright for Java
 
 Автоматизований тестовий проєкт для перевірки веб-застосунку SauceDemo засобами Playwright for Java, JUnit 5 та Maven.
 
