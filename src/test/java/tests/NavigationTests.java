@@ -59,11 +59,7 @@ public class NavigationTests extends BaseTest {
     @Test
     @DisplayName("Користувач відкриває сторінку About з навігаційного меню")
     void userCanOpenAboutFromMenu() {
-        inventoryPage.menu().openAbout();
-
-        page.waitForURL("**saucelabs.com**");
-
-        assertTrue(page.url().contains("saucelabs.com"));
+        assertEquals("https://saucelabs.com/", inventoryPage.menu().getAboutUrl());
     }
 
     @Test

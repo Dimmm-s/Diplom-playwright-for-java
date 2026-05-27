@@ -59,6 +59,11 @@ public class Menu {
         aboutLink.click();
     }
 
+    public String getAboutUrl() {
+        open();
+        return aboutLink.getAttribute("href");
+    }
+
     public LoginPage logout() {
         open();
         logoutLink.click();
