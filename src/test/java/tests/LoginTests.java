@@ -36,7 +36,6 @@ public class LoginTests extends BaseTest {
             "standard_user|''|Epic sadface: Password is required",
             "locked_out_user|secret_sauce|Epic sadface: Sorry, this user has been locked out."
     }, delimiter = '|')
-    @Tag("login")
     @Tag("negative")
     @DisplayName("Перевірка помилок авторизації")
     void loginValidationErrorsAreDisplayed(String username, String password, String expectedError) {
@@ -49,7 +48,6 @@ public class LoginTests extends BaseTest {
 
     @ParameterizedTest(name = "Захищений маршрут /{0} недоступний без входу")
     @ValueSource(strings = {"inventory.html", "cart.html", "checkout-step-one.html"})
-    @Tag("login")
     @Tag("access")
     @Tag("negative")
     @DisplayName("Внутрішні сторінки недоступні без авторизації")
